@@ -1,0 +1,47 @@
+I'll go over my solution step by step:
+
+1) Define the variables I will need to complete the project:
+
+(var unique [] counter 0 hash-cont [] num-holder [] answ [] item-list ["t" "a" "t" "b" "b" "b" "t" "t" "c" "c" "t" "c"])
+
+2) Define my function:
+
+(def order-items (arr))
+
+3) Inside function, loop through the array and push items to a new array only if they do not exist in that array:
+
+(each item arr (when (excludes? unique item)(unique.push item)))
+
+4) Loop through the new array that holds unique items only.  Assign a value of 0 to the counter for each new element in the unique array.  This starts the counter over for each iteration.  Inside the unique array loop, loop through arr and increase counter each time unique item appears in arr.
+
+(each item unique (assign counter 0) (each elm arr (when (= item elm)(incr counter))))
+
+5) Inside unique array loop create a hash that holds two properties: value and count.  Set the values of properties as value: item in list and count: counter. Now each unique item has been counted in the original list.  A hash is created to store the item with its corresponding count. Push this hash to an array called hash-cont.
+
+(each item unique (assign counter 0) (each elm arr (when (= item elm)(incr counter)))(var h {})(set h 'value item 'count counter)(hash-cont.push h)))
+
+
+6) Loop through hash-cont.  Get the count of the object and store it in a variable and push it to an array called num-holder.  Now all the counts to all the items are in an array.
+
+(each obj hash-cont (var t (get obj 'count))(num-holder.push t))
+
+7) sort the num-holder using a lambda that orders the numbers in the array from highest to lowest.
+
+(num-holder.sort((lambda (a b)(- b a))))
+
+8) Loop through the ordered num-holder.  Inside the loop, create a nested loop using the hash-cont.  In nested loop, set each objects count to a variable.  When that variable and the number in num-holder(first loop) are equal, we push that obj(from hash-cont) to the answr array only if that obj does not exist in answ array already.  Now in the answ array I have each unique item in a list, ordered from highest to lowest in terms of their frequency on original item list.
+
+(each n num-holder (each obj hash-cont (var p (get obj 'count))(when (= n p)(when (excludes? answ obj)(answ.push obj)))))
+
+
+
+Below is the full snippet of code including the call of the function and the call of the answ array holding the solution.  Copy and past code into a sibilant console and hit enter.
+
+
+(var unique [] counter 0 hash-cont [] num-holder [] answ [] item-list ["t" "a" "t" "b" "b" "b" "t" "t" "c" "c" "t" "c"])
+
+
+(def order-items (arr) (each item arr (when (excludes? unique item)(unique.push item))) (each item unique (assign counter 0) (each elm arr (when (= item elm)(incr counter)))(var h {})(set h 'value item 'count counter)(hash-cont.push h))(each obj hash-cont (var t (get obj 'count))(num-holder.push t)num-holder.sort((lambda (a b)(- b a))))(each n num-holder (each obj hash-cont (var p (get obj 'count))(when (= n p)(when (excludes? answ obj)(answ.push obj))))))
+
+order-items(item-list)
+answ
